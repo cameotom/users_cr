@@ -12,6 +12,33 @@ def index():
         print(i.first_name, i.last_name)
     return render_template("index.html", users=users)
 
+@app.route ('/user/<int:id>')
+def show_user(id):
+    data = {
+        "id":id
+    }
+    return render_template("show_user.html", user=User.get_one(data))
+
+@app.route ('/user/edit/<int:id>')
+def edit(id):
+    data = {
+        "id":id
+    }
+    return render_template("edit_user.html", user=User.get_one(data))
+
+@app.route ('/user/update',methods=['POST'])
+def update():
+    User.update(request.form)
+    return redirect ('/')
+
+@app.route ('/user/delete/<int:id>')
+def delete(id):
+    data = {
+        "id":id
+    }
+    User.delete(data)
+    return redirect ('/')
+
 @app.route ('/add_user')
 def add_user():
     return render_template("add.html")
